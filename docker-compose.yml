@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./api:/var/www
+    networks:
+      - web-network
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:alpine
+    container_name: web-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./api:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d/
+      - ./docker/log/nginx:/var/log/nginx
+    networks:
+      - web-network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: web-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-bet}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_USER: ${DB_USERNAME:-bet}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/mysql
+    networks:
+      - web-network
+
+networks:
+  web-network:
+    driver: bridge
+
+volumes:
+  dbdata:
