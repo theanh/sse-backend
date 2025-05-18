@@ -10,9 +10,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class WagerRepository
 {
+    public function __construct(
+        protected Wager $wager
+    ) {}
+
     public function create(array $data): Wager
     {
-        return Wager::create([
+        return $this->wager->create([
             ...$data,
             'current_selling_price' => $data['selling_price'],
             'placed_at' => Carbon::now(),
@@ -21,7 +25,7 @@ class WagerRepository
 
     public function list(int $page = 1, int $limit = 10): LengthAwarePaginator
     {
-        return Wager::orderBy('id', 'desc')
+        return $this->wager->orderBy('id', 'desc')
             ->paginate(
                 perPage: $limit,
                 page: $page
@@ -30,7 +34,7 @@ class WagerRepository
 
     public function findOrFail(int $id): Wager
     {
-        return Wager::findOrFail($id);
+        return $this->wager->findOrFail($id);
     }
 
     public function updatePurchaseStats(Wager $wager, float $buyingPrice): void
