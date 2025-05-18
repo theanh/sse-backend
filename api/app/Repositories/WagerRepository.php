@@ -32,9 +32,9 @@ class WagerRepository
             );
     }
 
-    public function findOrFail(int $id): Wager
+    public function findOne(int $id): ?Wager
     {
-        return $this->wager->findOrFail($id);
+        return $this->wager->find($id);
     }
 
     public function updatePurchaseStats(Wager $wager, float $buyingPrice): void

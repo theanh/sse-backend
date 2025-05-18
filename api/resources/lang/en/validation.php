@@ -17,11 +17,16 @@ return [
         'selling_price' => [
             'min_price' => 'The selling price must be greater than :min.',
         ],
+        'buying_price' => [
+            'max' => 'The buying price must be less than or equal to :max.',
+        ],
     ],
     'attributes' => [
         'total_wager_value' => 'total wager value',
         'odds' => 'odds',
         'selling_percentage' => 'selling percentage',
         'selling_price' => 'selling price',
+        'buying_price' => 'buying price',
     ],
+    'not_found' => 'Not found',
 ];
