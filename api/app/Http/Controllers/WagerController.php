@@ -17,8 +17,8 @@ use App\Http\Requests\ListWagersRequest;
 class WagerController extends Controller
 {
     public function __construct(
-        private readonly WagerRepository $wagerRepository,
-        private readonly PurchaseRepository $purchaseRepository,
+        private WagerRepository $wagerRepository,
+        private PurchaseRepository $purchaseRepository,
     ) {
     }
 
