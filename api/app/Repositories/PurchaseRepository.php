@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\Purchase;
-use App\Models\Wager;
 use Carbon\Carbon;
 use Illuminate\Database\DatabaseManager;
 
@@ -18,21 +17,37 @@ class PurchaseRepository
     ) {
     }
 
-    public function create(Wager $wager, float $buyingPrice): Purchase
+    public function create(int $wagerId, float $buyingPrice): Purchase
     {
         return $this->model->create([
-            'wager_id' => $wager->id,
+            'wager_id' => $wagerId,
             'buying_price' => $buyingPrice,
             'bought_at' => Carbon::now(),
         ]);
     }
 
-    public function buy(Wager $wager, float $buyingPrice): Purchase
+    public function buy(int $wagerId, float $buyingPrice): Purchase
     {
-        return $this->db->transaction(function () use ($wager, $buyingPrice) {
-            $purchase = $this->create($wager, $buyingPrice);
+        $this->db->beginTransaction();
+        try {
+            // Reload the latest wager info inside the transaction
+            $wager = $this->wagerRepository->findOne($wagerId);
+            if (!$wager) {
+                throw new \RuntimeException('Wager not found.');
+            }
+            // Validate buying price against current_selling_price inside transaction
+            if ($buyingPrice > $wager->current_selling_price) {
+                throw new \RuntimeException('The buying price must be less than or equal to the current selling price.');
+            }
+            $purchase = $this->create($wager->id, $buyingPrice);
             $this->wagerRepository->updatePurchaseStats($wager, $buyingPrice);
+
+            $this->db->commit();
+
             return $purchase;
-        });
+        } catch (\Throwable $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
     }
 }

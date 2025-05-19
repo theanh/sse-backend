@@ -43,8 +43,7 @@ To run the full test suite (feature and unit tests):
 Or, to run tests for a specific feature (e.g., wagers):
 
 ```bash
-cd api
-php artisan test --filter=Wager
+docker compose exec app php artisan test --filter=List
 ```
 
 **Prerequisites:**

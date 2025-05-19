@@ -39,9 +39,8 @@ class WagerController extends Controller
     public function buy(BuyWagerRequest $request, int $wagerId): JsonResponse
     {
         try {
-            $wager = $this->wagerRepository->findOne($wagerId);
             $buyingPrice = (float) $request->input('buying_price');
-            $purchase = $this->purchaseRepository->buy($wager, $buyingPrice);
+            $purchase = $this->purchaseRepository->buy($wagerId, $buyingPrice);
             return (new PurchaseResource($purchase))
                 ->response()
                 ->setStatusCode(Response::HTTP_CREATED);
