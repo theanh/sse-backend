@@ -7,14 +7,13 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PlaceWagerApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @dataProvider validPayloadProvider
-     */
+    #[DataProvider('validPayloadProvider')]
     public function testPlaceWagerSuccess(array $payload, array $expected): void
     {
         $response = $this->postJson('/api/wagers', $payload);
@@ -82,9 +81,7 @@ class PlaceWagerApiTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidPayloadProvider
-     */
+    #[DataProvider('invalidPayloadProvider')]
     public function testPlaceWagerFailsWithInvalidPayload(
         array $payload,
         string $expectedError

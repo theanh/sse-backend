@@ -9,6 +9,7 @@ use App\Repositories\PurchaseRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class BuyWagerApiTest extends TestCase
 {
@@ -24,9 +25,7 @@ class BuyWagerApiTest extends TestCase
         $this->purchaseRepository = $this->app->make(PurchaseRepository::class);
     }
 
-    /**
-     * @dataProvider validBuyPayloadProvider
-     */
+    #[DataProvider('validBuyPayloadProvider')]
     public function testBuyWagerSuccess(array $wagerData, array $payload, array $expected): void
     {
         $wager = $this->wagerRepository->create($wagerData);
@@ -96,9 +95,7 @@ class BuyWagerApiTest extends TestCase
         $this->postJson("/api/buy/{$wager->id}", ['buying_price' => 10])->assertBadRequest();
     }
 
-    /**
-     * @dataProvider invalidBuyPayloadProvider
-     */
+    #[DataProvider('invalidBuyPayloadProvider')]
     public function testBuyWagerFailsWithInvalidPayload(
         ?array $wagerData,
         array $payload,
