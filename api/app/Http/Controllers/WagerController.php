@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\WagerResource;
 use App\Http\Requests\BuyWagerRequest;
 use App\Http\Resources\PurchaseResource;
+use App\Http\Requests\ListWagersRequest;
 
 class WagerController extends Controller
 {
@@ -49,5 +50,17 @@ class WagerController extends Controller
                 'error' => __('messages.internal_error'),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function list(ListWagersRequest $request): JsonResponse
+    {
+        $page = (int) $request->validated('page', 1);
+        $limit = (int) $request->validated('limit', 10);
+        $wagers = $this->wagerRepository->list($page, $limit);
+
+        return response()->json(
+            WagerResource::collection($wagers)->resolve(),
+            Response::HTTP_OK
+        );
     }
 }

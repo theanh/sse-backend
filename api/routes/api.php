@@ -6,6 +6,7 @@ use App\Http\Controllers\WagerController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['api'])->group(function () {
+    Route::get('/wagers', [WagerController::class, 'list']);
     Route::post('/wagers', [WagerController::class, 'create']);
     Route::post('/buy/{wager_id}', [WagerController::class, 'buy']);
 });
