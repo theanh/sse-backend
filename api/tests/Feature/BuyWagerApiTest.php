@@ -34,7 +34,8 @@ class BuyWagerApiTest extends TestCase
 
         $response->assertCreated();
         $this->assertSame(201, $response->status());
-        $response->assertJson(fn (AssertableJson $json) =>
+        $response->assertJson(
+            fn (AssertableJson $json) =>
             $json->hasAll(['id', 'wager_id', 'buying_price', 'bought_at'])
                 ->where('wager_id', $wager->id)
                 ->where('buying_price', $expected['buying_price'])

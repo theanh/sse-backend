@@ -32,7 +32,8 @@ class BuyWagerRequest extends FormRequest
                     }
 
                     if ($value > $wager->current_selling_price) {
-                        $fail(__('validation.custom.buying_price.max',
+                        $fail(__(
+                            'validation.custom.buying_price.max',
                             ['max' => $wager->current_selling_price]
                         ));
                     }

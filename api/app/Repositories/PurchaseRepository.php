@@ -15,7 +15,8 @@ class PurchaseRepository
         protected Purchase $model,
         protected WagerRepository $wagerRepository,
         protected DatabaseManager $db
-    ) {}
+    ) {
+    }
 
     public function create(Wager $wager, float $buyingPrice): Purchase
     {

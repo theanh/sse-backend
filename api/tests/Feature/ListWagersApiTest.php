@@ -52,8 +52,10 @@ class ListWagersApiTest extends TestCase
         $this->seedWagers($seed);
         $response = $this->getJson('/api/wagers?' . http_build_query($query));
         $response->assertOk();
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->each(fn (AssertableJson $item) =>
+        $response->assertJson(
+            fn (AssertableJson $json) =>
+            $json->each(
+                fn (AssertableJson $item) =>
                 $item->hasAll([
                     'id',
                     'total_wager_value',

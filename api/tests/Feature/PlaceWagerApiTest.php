@@ -20,7 +20,8 @@ class PlaceWagerApiTest extends TestCase
 
         $response->assertCreated();
         $this->assertSame(201, $response->status());
-        $response->assertJson(fn (AssertableJson $json) =>
+        $response->assertJson(
+            fn (AssertableJson $json) =>
             $json->hasAll([
                 'id',
                 'total_wager_value',

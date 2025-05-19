@@ -12,7 +12,8 @@ class WagerRepository
 {
     public function __construct(
         protected Wager $wager
-    ) {}
+    ) {
+    }
 
     public function create(array $data): Wager
     {

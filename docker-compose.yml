@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -12,8 +10,6 @@ services:
       - ./api:/var/www
     networks:
       - web-network
-    depends_on:
-      - db
 
   nginx:
     image: nginx:1.28-alpine
@@ -35,12 +31,10 @@ services:
     container_name: web-db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-bet}
+      MYSQL_DATABASE: ${DB_DATABASE:-project}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
       MYSQL_PASSWORD: ${DB_PASSWORD:-password}
-      MYSQL_USER: ${DB_USERNAME:-bet}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      MYSQL_USER: ${DB_USERNAME:-project}
     ports:
       - "3306:3306"
     volumes:

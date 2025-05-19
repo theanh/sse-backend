@@ -13,6 +13,9 @@ sleep 30
 # Install dependencies
 docker compose exec app composer install
 
+# Copy env
+docker compose exec app cp .env.example .env
+
 # Generate application key
 docker compose exec app php artisan key:generate
 
